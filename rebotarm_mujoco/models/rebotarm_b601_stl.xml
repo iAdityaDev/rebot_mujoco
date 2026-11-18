@@ -41,6 +41,8 @@
     <!-- This accessory STL is exported in millimetres. -->
     <mesh name="d405_305_mount_mesh" file="D405_305_Mount.stl" scale="0.001 0.001 0.001"/>
     <mesh name="realsense_d405_mesh" file="RealSense_D405.stl" scale="0.001 0.001 0.001"/>
+    <!-- The D415 STL is already in metres. -->
+    <mesh name="intel_d415_mesh" file="Intel D415.stl"/>
     <mesh name="soundbox_mesh" file="soundbox.stl" scale="0.001 0.001 0.001"/>
 
     <mesh name="gripper_base_hardware_black_mesh" file="colored_gripper_base_hardware_black.stl"/>
@@ -60,6 +62,7 @@
     <material name="matte_black_mat" rgba="0.066667 0.074510 0.070588 1" specular="0.42" shininess="0.48" metallic="0.48" roughness="0.48"/>
     <material name="d405_305_mount_white_mat" rgba="0.95 0.95 0.95 1" specular="0.25" shininess="0.20" metallic="0" roughness="0.65"/>
     <material name="d405_camera_silver_mat" rgba="0.72 0.75 0.78 1" specular="0.70" shininess="0.75" metallic="0.85" roughness="0.25"/>
+    <material name="d415_camera_silver_mat" rgba="0.72 0.75 0.78 1" specular="0.70" shininess="0.75" metallic="0.85" roughness="0.25"/>
     <material name="d405_camera_mirror_mat" rgba="0.10 0.12 0.14 1" specular="1" shininess="0.98" reflectance="0.70" metallic="0.15" roughness="0.02"/>
     <material name="seeed_yellow_mat" rgba="0.73 0.84 0.12 1" specular="0.22" shininess="0.26" metallic="0.18" roughness="0.34"/>
     <material name="silver_trim_mat" rgba="0.878431 0.890196 0.874510 1" specular="0.72" shininess="0.90" metallic="0.88" roughness="0.18"/>
@@ -96,6 +99,19 @@
       <geom name="task_table_leg_front_right" type="box" pos="-0.39 0.54 -0.375" size="0.025 0.025 0.355" material="table_mat" contype="1" conaffinity="1"/>
       <geom name="task_table_leg_back_left" type="box" pos="0.39 -0.54 -0.375" size="0.025 0.025 0.355" material="table_mat" contype="1" conaffinity="1"/>
       <geom name="task_table_leg_back_right" type="box" pos="0.39 0.54 -0.375" size="0.025 0.025 0.355" material="table_mat" contype="1" conaffinity="1"/>
+    </body>
+
+    <!-- Fixed D415 on the opposite X=0.90 m table edge, with its lens 0.80 m
+         above the 0.75 m tabletop. Its +Y front faces inward and 60 degrees down. -->
+    <body name="d415_stand" pos="0.90 0 0.75">
+      <geom name="d415_stand_post" type="cylinder" pos="0 0 0.4095" size="0.008 0.4095"
+            material="table_mat" mass="0" contype="0" conaffinity="0"/>
+      <body name="d415_camera" pos="0 -0.038 0.81905" quat="0.6123724357 -0.3535533906 -0.3535533906 0.6123724357">
+        <geom name="d415_camera_visual" type="mesh" mesh="intel_d415_mesh"
+              material="d415_camera_silver_mat" mass="0" contype="0" conaffinity="0"/>
+        <!-- MuJoCo cameras look along -Z; the STL's optical front is +Y. -->
+        <camera name="d415_rgb" pos="0.038 0.022 0" quat="0.7071067812 0.7071067812 0 0" fovy="70"/>
+      </body>
     </body>
 
     <!-- STL coordinates are millimetres; its bottom is at local Z=0. -->
@@ -182,7 +198,7 @@
                             mass="0" contype="0" conaffinity="0"/>
                       <!-- MuJoCo cameras look along -Z; rotate this lens to face the
                            mesh's +Z front. The lens is 1 mm ahead of that face. -->
-                      <camera name="d405_rgb" pos="0 0 0.001" quat="0 0 1 0" fovy="58"/>
+                      <camera name="d405_rgb" pos="0 0 0.001" quat="0 0 1 0" fovy="80"/>
                     </body>
                   </body>
 
